@@ -1,10 +1,10 @@
 package com.example.pharmassist.exception;
 
-public class NoUsersFoundException extends RuntimeException
+public class NoAdminsFoundException extends RuntimeException
 {
 	private final String message;
 
-	public NoUsersFoundException(String message) 
+	public NoAdminsFoundException(String message) 
 	{
 		super();
 		this.message = message;

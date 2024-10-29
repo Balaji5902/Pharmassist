@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.example.pharmassist.exception.NoUsersFoundException;
-import com.example.pharmassist.exception.UserNotFoundByIdException;
+import com.example.pharmassist.exception.AdminNotFoundByIdException;
+import com.example.pharmassist.exception.NoAdminsFoundException;
 import com.example.pharmassist.util.AppResponseBuilder;
 import com.example.pharmassist.util.ErrorStructure;
 
@@ -21,14 +21,14 @@ public class UserExceptionHandler
 		this.appResponseBuilder = appResponseBuilder;
 	}
 
-	@ExceptionHandler(UserNotFoundByIdException.class)
-	public static <T> ResponseEntity<ErrorStructure<String>> handleUserNotFoundById(UserNotFoundByIdException ex) {
+	@ExceptionHandler(AdminNotFoundByIdException.class)
+	public static <T> ResponseEntity<ErrorStructure<String>> handleUserNotFoundById(AdminNotFoundByIdException ex) {
 		return AppResponseBuilder.error(HttpStatus.NOT_FOUND, ex.getMessage(),"User not found by Id");
 
 	}
 
-	@ExceptionHandler(NoUsersFoundException.class)
-	public static ResponseEntity<ErrorStructure<String>> handleNoUsersFound(NoUsersFoundException ex){
+	@ExceptionHandler(NoAdminsFoundException.class)
+	public static ResponseEntity<ErrorStructure<String>> handleNoUsersFound(NoAdminsFoundException ex){
 		return AppResponseBuilder.error(HttpStatus.NOT_FOUND, ex.getMessage(),"User not found under requested criteria");
 	}
 
