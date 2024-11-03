@@ -58,4 +58,15 @@ public class PharmacyService
 		//				.orElseThrow(() -> new PharmacyNotFoundException("No Pharmacy associated with admin ID:"+adminId));
 
 	}
+
+	public PharmacyResponse updatePharmacy(PharmacyRequest pharmacyRequest,String pharmacyId)
+	{
+		return pharmacyRepository.findById(pharmacyId)
+				.map(exPharmacy ->{
+					pharmacyMapper.mapToPharmacy(pharmacyRequest, exPharmacy);
+					return pharmacyRepository.save(exPharmacy);
+				})
+				.map(pharmacyMapper::mapToPharmacyResponse)
+				.orElseThrow(() -> new PharmacyNotFoundException("Failed to update Pharmacy"));
+	}
 }
