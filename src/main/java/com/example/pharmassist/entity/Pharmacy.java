@@ -6,7 +6,6 @@ import com.example.pharmassist.config.GenerateCustomId;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
@@ -23,7 +22,7 @@ public class Pharmacy
 	@OneToOne(mappedBy = "pharmacy")
 	private Admin admin;
 
-	@OneToMany
+	@OneToMany(mappedBy = "pharmacy")
 	private List<Patient> patients;
 
 

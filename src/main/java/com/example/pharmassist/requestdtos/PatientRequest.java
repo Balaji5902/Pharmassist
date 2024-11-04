@@ -1,40 +1,36 @@
-package com.example.pharmassist.entity;
+package com.example.pharmassist.requestdtos;
 
 import java.time.LocalDate;
 
-import com.example.pharmassist.config.GenerateCustomId;
 import com.example.pharmassist.enums.Gender;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
-@Entity
-public class Patient
+public class PatientRequest 
 {
-	@Id
-	@GenerateCustomId
-	private String patientId;
+	@NotNull(message ="Name cannot be null")
+	@NotBlank(message ="Name cannot be blank")
+	@Pattern(regexp ="^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,50}$",message = "Invalid name")
 	private String name;
+
+	@NotNull(message="Phone Number is not to be null")
+	@NotBlank(message="Phone Number is not to be blank")
+	@Pattern(regexp = "^[6-9]\\d{9}$",
+	message="Inavlid Phone Number")
 	private String phoneNumber;
+
+	@NotNull(message="Email is not to be null")
+	@NotBlank(message="Email is not to be blank")
+	@Email(regexp = "^[a-zA-Z0-9._%+-]+@gmail\\.com$",
+	message="Inavlid Email ID")
 	private String email;
 
-	@Enumerated(EnumType.STRING)
 	private Gender gender;
+
 	private LocalDate dateOfBirth;
-
-	@ManyToOne
-	private Pharmacy pharmacy;
-
-	public String getPatientId() {
-		return patientId;
-	}
-
-	public void setPatientId(String patientId) {
-		this.patientId = patientId;
-	}
 
 	public String getName() {
 		return name;
@@ -76,11 +72,4 @@ public class Patient
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public Pharmacy getPharmacy() {
-		return pharmacy;
-	}
-
-	public void setPharmacy(Pharmacy pharmacy) {
-		this.pharmacy = pharmacy;
-	}
 }
