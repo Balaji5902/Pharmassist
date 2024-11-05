@@ -2,12 +2,18 @@ package com.example.pharmassist.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.pharmassist.exceptionhandler.FieldErrorExceptionHandler;
 import com.example.pharmassist.requestdtos.PatientRequest;
 import com.example.pharmassist.responsedtos.PatientResponse;
 import com.example.pharmassist.service.PatientService;
 import com.example.pharmassist.util.AppResponseBuilder;
+import com.example.pharmassist.util.ErrorStructure;
 import com.example.pharmassist.util.ResponseStructure;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -42,12 +48,34 @@ public class PatientController
 		return appResponseBuilder.success(HttpStatus.CREATED,"Patient Created", response);
 	}
 
+	@Operation(description = "The endpoint can be used to find the patients associated with the pharmacy through pharmacy ID",
+			responses = {
+					@ApiResponse(responseCode = "302",description = "Patients Found"),
+					@ApiResponse(responseCode = "404",description = "Pharmacy not found by ID",
+					content = {
+							@Content(schema = @Schema(implementation = ErrorStructure.class))
+					})
+	})
+
 	@GetMapping("/pharmacies/{pharmacyId}/patients")
 	public ResponseEntity<ResponseStructure<List<PatientResponse>>> findAllPatientsByPharmacyId(@PathVariable String pharmacyId)
 	{
 		List<PatientResponse> response=patientService.findAllPatientByPharmacyId(pharmacyId);
 		return appResponseBuilder.success(HttpStatus.FOUND,"Patients associated with the pharmacy found", response);
 	}
+
+	@Operation(description = "The endpoint can be used to update the patient based on the unique ID",
+			responses = {
+					@ApiResponse(responseCode = "302",description = "Patient Found and updated"),
+					@ApiResponse(responseCode = "400",description = "Bad Request",
+					content= {
+							@Content(schema= @Schema(implementation = FieldErrorExceptionHandler.class))
+					}),
+					@ApiResponse(responseCode = "404",description = "Patient not found by ID",
+					content = {
+							@Content(schema = @Schema(implementation = ErrorStructure.class))
+					})
+	})
 
 	@PutMapping("/patients/{patientId}")
 	public ResponseEntity<ResponseStructure<PatientResponse>> updatePatient(@RequestBody PatientRequest patientRequest,@PathVariable String patientId)
