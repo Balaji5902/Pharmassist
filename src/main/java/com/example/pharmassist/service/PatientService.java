@@ -13,7 +13,9 @@ import com.example.pharmassist.mapper.PatientMapper;
 import com.example.pharmassist.repository.PatientRepository;
 import com.example.pharmassist.repository.PharmacyRepository;
 import com.example.pharmassist.requestdtos.PatientRequest;
+import com.example.pharmassist.requestdtos.PharmacyRequest;
 import com.example.pharmassist.responsedtos.PatientResponse;
+import com.example.pharmassist.responsedtos.PharmacyResponse;
 
 @Service
 public class PatientService 
@@ -55,5 +57,16 @@ public class PatientService
 		return patients.stream()
 				.map(patientMapper::mapToPatientResponse)
 				.collect(Collectors.toList());
+	}
+
+	public PatientResponse updatePatient(PatientRequest pharmacyRequest,String patientId)
+	{
+		return patientRepository.findById(patientId)
+				.map(exPatient ->{
+					patientMapper.mapToPatient(pharmacyRequest, exPatient);
+					return patientRepository.save(exPatient);
+				})
+				.map(patientMapper::mapToPatientResponse)
+				.orElseThrow(() -> new PatientNotFoundException("Failed to update Pharmacy"));
 	}
 }
