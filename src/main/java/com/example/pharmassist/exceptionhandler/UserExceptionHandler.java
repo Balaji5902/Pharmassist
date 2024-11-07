@@ -6,11 +6,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.example.pharmassist.exception.AdminNotFoundByIdException;
+import com.example.pharmassist.exception.InvalidDataException;
+import com.example.pharmassist.exception.InvalidDateFormatException;
+import com.example.pharmassist.exception.InvalidFileFormatException;
 import com.example.pharmassist.exception.NoAdminsFoundException;
 import com.example.pharmassist.exception.PatientNotFoundException;
 import com.example.pharmassist.exception.PharmacyNotFoundException;
 import com.example.pharmassist.util.AppResponseBuilder;
 import com.example.pharmassist.util.ErrorStructure;
+
+import jakarta.validation.ConstraintViolationException;
 
 @RestControllerAdvice
 public class UserExceptionHandler 
@@ -24,24 +29,46 @@ public class UserExceptionHandler
 	}
 
 	@ExceptionHandler(AdminNotFoundByIdException.class)
-	public static <T> ResponseEntity<ErrorStructure<String>> handleAdminNotFoundById(AdminNotFoundByIdException ex) {
+	public static <T> ResponseEntity<ErrorStructure<String>> handleAdminNotFoundById(AdminNotFoundByIdException ex) 
+	{
 		return AppResponseBuilder.error(HttpStatus.NOT_FOUND, ex.getMessage(),"Admin not found by Id");
-
 	}
 
 	@ExceptionHandler(NoAdminsFoundException.class)
-	public static ResponseEntity<ErrorStructure<String>> handleNoUsersFound(NoAdminsFoundException ex){
+	public static ResponseEntity<ErrorStructure<String>> handleNoUsersFound(NoAdminsFoundException ex)
+	{
 		return AppResponseBuilder.error(HttpStatus.NOT_FOUND, ex.getMessage(),"Admin not found under requested criteria");
 	}
 
 	@ExceptionHandler(PharmacyNotFoundException.class)
-	public static <T> ResponseEntity<ErrorStructure<String>> handlePharmacyNotFound(PharmacyNotFoundException ex) {
+	public static <T> ResponseEntity<ErrorStructure<String>> handlePharmacyNotFound(PharmacyNotFoundException ex)
+	{
 		return AppResponseBuilder.error(HttpStatus.NOT_FOUND, ex.getMessage(),"Pharmacy not found by Id");
 	}
 
 	@ExceptionHandler(PatientNotFoundException.class)
 	public static <T> ResponseEntity<ErrorStructure<String>> handlePatientNotFound(PatientNotFoundException ex) {
-		return AppResponseBuilder.error(HttpStatus.NOT_FOUND, ex.getMessage(),"Pharmacy not found by Id");
+		return AppResponseBuilder.error(HttpStatus.NOT_FOUND, ex.getMessage(),"Patient not found by Id");
+	}
+
+	@ExceptionHandler(InvalidDataException.class)
+	public static <T> ResponseEntity<ErrorStructure<String>> handleInvalidData(InvalidDataException ex) {
+		return AppResponseBuilder.error(HttpStatus.NOT_FOUND, ex.getMessage(),"Data Is Invalid");
+	}
+
+	@ExceptionHandler(InvalidDateFormatException.class)
+	public static <T> ResponseEntity<ErrorStructure<String>> handleInvalidDateFormat(InvalidDateFormatException ex) {
+		return AppResponseBuilder.error(HttpStatus.NOT_FOUND, ex.getMessage(),"Date Format is Invalid");
+	}
+
+	@ExceptionHandler(InvalidFileFormatException.class)
+	public static <T> ResponseEntity<ErrorStructure<String>> handleInvalidFileFormat(InvalidFileFormatException ex) {
+		return AppResponseBuilder.error(HttpStatus.NOT_FOUND, ex.getMessage(),"File Format is Inavlid");
+	}
+	
+	@ExceptionHandler(ConstraintViolationException.class)
+	public static <T> ResponseEntity<ErrorStructure<String>> handleConstraintViolationException(ConstraintViolationException ex) {
+		return AppResponseBuilder.error(HttpStatus.BAD_REQUEST, ex.getMessage(),"Invalid Data Format");
 	}
 
 }

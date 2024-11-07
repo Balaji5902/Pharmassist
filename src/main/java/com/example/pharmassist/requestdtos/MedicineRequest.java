@@ -1,28 +1,19 @@
-package com.example.pharmassist.entity;
+package com.example.pharmassist.requestdtos;
 
 import java.time.LocalDate;
 
-import com.example.pharmassist.config.GenerateCustomId;
 import com.example.pharmassist.enums.Form;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-@Entity
-public class Medicine 
+public class MedicineRequest 
 {
-	@Id
-	@GenerateCustomId
-	private String medicineId;
-
 	@NotNull(message ="Name cannot be null")
 	@NotBlank(message ="Name cannot be blank")
 	@Pattern(regexp ="^[A-Za-z0-9\\s\\-\\(\\)]{1,50}$",message = "Invalid name")
@@ -53,22 +44,10 @@ public class Medicine
 	private LocalDate expiryDate;
 
 	@NotNull (message = "Form cannot be null")
-	@Enumerated(EnumType.STRING)
 	private Form form;
 
-	@Min(value = 0, message = "Quantity must be at least Rs.1")
+	@Min(value = 1, message = "Quantity must be at least Rs.1")
 	private int stockQuantity;
-
-	@ManyToOne
-	private Pharmacy pharmacy;
-
-	public String getMedicineId() {
-		return medicineId;
-	}
-
-	public void setMedicineId(String medicineId) {
-		this.medicineId = medicineId;
-	}
 
 	public String getName() {
 		return name;
@@ -140,14 +119,6 @@ public class Medicine
 
 	public void setPrice(double price) {
 		this.price = price;
-	}
-
-	public Pharmacy getPharmacy() {
-		return pharmacy;
-	}
-
-	public void setPharmacy(Pharmacy pharmacy) {
-		this.pharmacy = pharmacy;
 	}
 
 
