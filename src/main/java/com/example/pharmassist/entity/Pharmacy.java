@@ -25,7 +25,16 @@ public class Pharmacy
 	@OneToMany(mappedBy = "pharmacy")
 	private List<Patient> patients;
 
+	@OneToMany(mappedBy = "pharmacy")
+	private List<Medicine> medicines;	
 
+
+	public List<Medicine> getMedicines() {
+		return medicines;
+	}
+	public void setMedicines(List<Medicine> medicines) {
+		this.medicines = medicines;
+	}
 	public Admin getAdmin() {
 		return admin;
 	}
