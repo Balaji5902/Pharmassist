@@ -10,6 +10,7 @@ import com.example.pharmassist.exception.InvalidDataException;
 import com.example.pharmassist.exception.InvalidDateFormatException;
 import com.example.pharmassist.exception.InvalidFileFormatException;
 import com.example.pharmassist.exception.NoAdminsFoundException;
+import com.example.pharmassist.exception.NoMedicinesFoundException;
 import com.example.pharmassist.exception.PatientNotFoundException;
 import com.example.pharmassist.exception.PharmacyNotFoundException;
 import com.example.pharmassist.util.AppResponseBuilder;
@@ -69,6 +70,11 @@ public class UserExceptionHandler
 	@ExceptionHandler(ConstraintViolationException.class)
 	public static <T> ResponseEntity<ErrorStructure<String>> handleConstraintViolationException(ConstraintViolationException ex) {
 		return AppResponseBuilder.error(HttpStatus.BAD_REQUEST, ex.getMessage(),"Invalid Data Format");
+	}
+	
+	@ExceptionHandler(NoMedicinesFoundException.class)
+	public static <T> ResponseEntity<ErrorStructure<String>> handleNoMedicineFound(NoMedicinesFoundException ex) {
+		return AppResponseBuilder.error(HttpStatus.BAD_REQUEST, ex.getMessage(),"No Medicine Found");
 	}
 
 }
