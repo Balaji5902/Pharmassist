@@ -2,6 +2,7 @@ package com.example.pharmassist.exceptionhandler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -66,15 +67,20 @@ public class UserExceptionHandler
 	public static <T> ResponseEntity<ErrorStructure<String>> handleInvalidFileFormat(InvalidFileFormatException ex) {
 		return AppResponseBuilder.error(HttpStatus.NOT_FOUND, ex.getMessage(),"File Format is Inavlid");
 	}
-	
+
 	@ExceptionHandler(ConstraintViolationException.class)
 	public static <T> ResponseEntity<ErrorStructure<String>> handleConstraintViolationException(ConstraintViolationException ex) {
 		return AppResponseBuilder.error(HttpStatus.BAD_REQUEST, ex.getMessage(),"Invalid Data Format");
 	}
-	
+
 	@ExceptionHandler(NoMedicinesFoundException.class)
 	public static <T> ResponseEntity<ErrorStructure<String>> handleNoMedicineFound(NoMedicinesFoundException ex) {
 		return AppResponseBuilder.error(HttpStatus.BAD_REQUEST, ex.getMessage(),"No Medicine Found");
+	}
+
+	@ExceptionHandler(UsernameNotFoundException.class)
+	public static <T> ResponseEntity<ErrorStructure<String>> handleNoUsernameFound(UsernameNotFoundException ex) {
+		return AppResponseBuilder.error(HttpStatus.BAD_REQUEST, ex.getMessage(),"No Username Found");
 	}
 
 }

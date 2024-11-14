@@ -39,7 +39,7 @@ public class AdminController
 		this.appResponseBuilder=appResponseBuilder;
 	}
 
-	@PostMapping("/admins")
+	@PostMapping("/register")
 	public ResponseEntity<ResponseStructure<AdminResponse>> addAdmin(@RequestBody @Valid AdminRequest adminRequest)
 	{
 		AdminResponse response=adminService.addAdmin(adminRequest);
