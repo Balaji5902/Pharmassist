@@ -1,5 +1,6 @@
 package com.example.pharmassist.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.pharmassist.entity.Admin;
@@ -15,16 +16,20 @@ public class AdminService
 {
 	private final AdminRepository adminRepository;
 	private final AdminMapper adminMapper;
+	private final PasswordEncoder passwordEncoder;
 
-	public AdminService(AdminRepository adminRepository,AppResponseBuilder appResponseBuilder,AdminMapper adminMapper)
+	public AdminService(AdminRepository adminRepository,AdminMapper adminMapper,PasswordEncoder passwordEncoder)
 	{
 		this.adminRepository=adminRepository;
 		this.adminMapper=adminMapper;
+		this.passwordEncoder=passwordEncoder;
 	}
 
 	public AdminResponse addAdmin(AdminRequest adminRequest)
 	{
-		Admin admin=adminRepository.save(adminMapper.mapToAdmin(adminRequest, new Admin()));
+		Admin admin=adminMapper.mapToAdmin(adminRequest, new Admin());
+		admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+		admin=adminRepository.save(admin);
 		return adminMapper.mapToAdminResponse(admin);
 	}
 
